@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [ main, master ]
 
-# Ejecuta los comandos dentro de la carpeta backend
-defaults:
-  run:
-    working-directory: backend
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +18,7 @@ jobs:
         with:
           node-version: '18.x'
           cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
