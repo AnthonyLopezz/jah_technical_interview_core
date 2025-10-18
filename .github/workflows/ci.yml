@@ -24,12 +24,15 @@ jobs:
         run: npm ci
 
       - name: Typecheck
+        if: ${{ hashFiles('tsconfig.json') != '' && hashFiles('src/**/*.ts') != '' }}
         run: npm run typecheck
 
       - name: Lint
+        if: ${{ hashFiles('src/**/*.ts') != '' }}
         run: npm run lint
 
       - name: Tests
+        if: ${{ hashFiles('src/**/*.ts') != '' }}
         env:
           CI: true
         run: npm test -- --ci
