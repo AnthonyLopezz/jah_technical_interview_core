@@ -24,15 +24,30 @@ jobs:
         run: npm ci
 
       - name: Typecheck
-        if: ${{ hashFiles('tsconfig.json') != '' && hashFiles('src/**/*.ts') != '' }}
-        run: npm run typecheck
+        shell: bash
+        run: |
+          if [ -d src ] && find src -type f -name "*.ts" | grep -q .; then
+            npm run typecheck
+          else
+            echo "Skipping typecheck: no TS files in src"
+          fi
 
       - name: Lint
-        if: ${{ hashFiles('src/**/*.ts') != '' }}
-        run: npm run lint
+        shell: bash
+        run: |
+          if [ -d src ] && find src -type f -name "*.ts" | grep -q .; then
+            npm run lint
+          else
+            echo "Skipping lint: no TS files in src"
+          fi
 
       - name: Tests
-        if: ${{ hashFiles('src/**/*.ts') != '' }}
+        shell: bash
         env:
           CI: true
-        run: npm test -- --ci
+        run: |
+          if [ -d src ] && find src -type f -name "*.ts" | grep -q .; then
+            npm test -- --ci
+          else
+            echo "Skipping tests: no TS files in src"
+          fi
